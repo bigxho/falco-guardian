@@ -1,0 +1,18 @@
+[Unit]
+Description=FALCO Guardian - eBPF/C packet capture
+After=network.target
+
+[Service]
+Type=simple
+# Replace eth0 with the server's actual interface (see `ip link`)
+ExecStart=/opt/falco-guardian/ebpf/build/loader eth0
+Restart=on-failure
+RestartSec=3
+RuntimeDirectory=falco-guardian
+RuntimeDirectoryMode=0770
+# Requires privileges to load eBPF programs and attach XDP
+AmbientCapabilities=CAP_NET_ADMIN CAP_SYS_ADMIN CAP_BPF
+NoNewPrivileges=false
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FALCO Guardian - Dashboard</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #0f1117; color: #e6e6e6; margin: 0; padding: 2rem; }
+  h1 { color: #ff5c5c; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #2a2d3a; font-size: 0.9rem; }
+  th { color: #9aa0b4; text-transform: uppercase; font-size: 0.75rem; }
+  .sev-high { color: #ff5c5c; font-weight: bold; }
+  .sev-medium { color: #ffb347; }
+  .sev-low { color: #7dd3fc; }
+</style>
+</head>
+<body>
+  <h1>🦅 FALCO Guardian</h1>
+  <p>Recent alerts (automatically refreshed every 5s)</p>
+  <table>
+    <thead>
+      <tr><th>Time</th><th>Detector</th><th>Severity</th><th>IP</th><th>Country</th><th>Details</th></tr>
+    </thead>
+    <tbody id="alerts-body"></tbody>
+  </table>
+
+<script>
+async function refresh() {
+  const res = await fetch('/api/alerts');
+  const alerts = await res.json();
+  const body = document.getElementById('alerts-body');
+  body.innerHTML = alerts.map(a => `
+    <tr>
+      <td>${a.ts || ''}</td>
+      <td>${a.detector || ''}</td>
+      <td class="sev-${a.severity || 'low'}">${a.severity || ''}</td>
+      <td>${a.ip || ''}</td>
+      <td>${(a.geo && a.geo.country) || '-'}</td>
+      <td>${a.reason || ''}</td>
+    </tr>
+  `).join('');
+}
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>

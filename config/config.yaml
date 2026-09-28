@@ -1,0 +1,45 @@
+# FALCO Guardian configuration
+
+network:
+  interface: eth0            # interface monitored by the eBPF loader
+  capture_socket: /run/falco-guardian/capture.sock
+
+logging:
+  log_file: /var/log/falco-guardian/falco.log
+  level: INFO
+
+blocker:
+  enabled: false             # true = block IPs through iptables; false = log only (test mode)
+  block_duration_minutes: 60
+  whitelist:                 # IP addresses that must never be blocked (for example, the administration workstation)
+    - 127.0.0.1
+
+geoip:
+  enabled: true
+  database_path: /opt/falco-guardian/GeoLite2-City.mmdb
+
+detectors:
+  port_scan:
+    enabled: true
+    distinct_ports_threshold: 15
+    window_seconds: 30
+
+  brute_force:
+    enabled: true
+    auth_log_path: /var/log/auth.log
+    max_failed_attempts: 5
+    window_seconds: 120
+
+  exfiltration:
+    enabled: true
+    bytes_threshold_mb: 200
+    window_seconds: 60
+
+  anomalous_login:
+    enabled: true
+    allowed_countries: ["IT"]   # logins from other countries generate an alert
+    night_hours_alert: true     # additional alert for successful logins during nighttime hours (00:00-05:00)
+
+dashboard:
+  host: 0.0.0.0
+  port: 8080
