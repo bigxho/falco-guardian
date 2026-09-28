@@ -4,6 +4,10 @@
 
 > Project status: early-stage / experimental. Test in an isolated environment before production use.
 
+## Test view
+<img width="1304" height="915" alt="Screenshot From 2026-09-28 15-45-37" src="https://github.com/user-attachments/assets/ac26541c-ace6-4b9e-9aca-3a4f2eb2d697" />
+
+
 ## Core capabilities
 
 - Kernel-level IPv4 packet telemetry through eBPF/XDP.
