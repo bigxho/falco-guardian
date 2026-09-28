@@ -142,6 +142,6 @@ FALCO Guardian is free and open-source software distributed under the **GNU Gene
 
 ## Project website
 
-Project information: **landos.click**
+Project information: **https://landos.us**
 
 GitHub repository: **https://github.com/bigxho/falco-guardian**
